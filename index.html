@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VDMI Status Dashboard — Cernion a²mdm</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="demo-badge" class="demo-banner" style="display:none;">
+    <article class="container">
+      ⚡ <strong>Demo-Modus aktiv</strong> — API nicht erreichbar.
+      <a href="#" onclick="switchTab('einstellungen'); return false;">API-Einstellungen anpassen</a>
+    </article>
+  </div>
+
+  <header class="container">
+    <nav>
+      <hgroup>
+        <h1>📋 VDMI Status Dashboard</h1>
+        <p>Versorgungsdokumentation für VNB/Netzbetreiber — Cernion a²mdm</p>
+      </hgroup>
+    </nav>
+    <nav aria-label="breadcrumb">
+      <ul>
+        <li><button class="active" data-tab="dashboard">Dashboard</button></li>
+        <li><button data-tab="findings">Findings</button></li>
+        <li><button data-tab="einstellungen">Einstellungen</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="loading" class="loading-overlay" style="display:none;">
+      <article aria-busy="true">Lade VDMI-Daten…</article>
+    </div>
+
+    <section id="dashboard" class="tab-panel active">
+      <h2>Versorgungsdokumentation — Übersicht</h2>
+      <p>Status der VDMI-Dokumentation nach MaKo-Richtlinien für Verteilnetzbetreiber.</p>
+      <div id="dashboard-cards"></div>
+
+      <div class="grid charts-grid" style="margin-top:1.5rem;">
+        <div class="chart-card">
+          <h3>Findings-Trend (5 Monate)</h3>
+          <div style="height:280px;"><canvas id="trend-chart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Verteilung nach Kategorie</h3>
+          <div style="height:280px;"><canvas id="category-chart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="findings" class="tab-panel">
+      <h2>VDMI Findings</h2>
+      <div class="filter-bar">
+        <label>Filter Severity:
+          <select id="filter-severity">
+            <option value="">Alle</option>
+            <option value="error">Kritisch</option>
+            <option value="warning">Warning</option>
+            <option value="info">Info</option>
+          </select>
+        </label>
+        <label>Filter Status:
+          <select id="filter-status">
+            <option value="">Alle</option>
+            <option value="offen">Offen</option>
+            <option value="in_bearbeitung">In Bearbeitung</option>
+            <option value="geschlossen">Geschlossen</option>
+          </select>
+        </label>
+      </div>
+      <table id="findings-table" role="grid">
+        <thead>
+          <tr><th>ID</th><th>Severity</th><th>Kategorie</th><th>Beschreibung</th><th>Status</th><th>Frist</th><th>Zuständig</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="einstellungen" class="tab-panel">
+      <h2>API-Konfiguration</h2>
+      <form id="settings-form">
+        <label>API-Basis-URL <input type="url" id="cfg-url" value="https://api.cernion.de/" required></label>
+        <label>Tenant-ID <input type="text" id="cfg-tenant" value="agentic-hackathon" required></label>
+        <label>API-Token <input type="password" id="cfg-token" placeholder="optional"></label>
+        <button type="submit">Speichern</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container">
+    <hr>
+    <p><small>Powered by <a href="https://github.com/energychain/cernion-energy-tools">Cernion a²mdm</a> · Hackathon Lauf #4 · STROMDAO GmbH</small></p>
+  </footer>
+
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
