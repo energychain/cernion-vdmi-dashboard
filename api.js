@@ -72,11 +72,11 @@ class CernionAPI {
     } catch (e) { e.isCORS = e.message.indexOf('Failed') >= 0; throw e; }
   }
   async getVdmiStatus() {
-    try { return await this.get('/vdmi/status'); }
+    try { return await this.get('api/vdmi'); }
     catch (e) { return { success: true, ...DEMO_VDMI }; }
   }
   async getVdmiFindings(filter) {
-    try { return await this.get('/vdmi/findings' + (filter ? '?' + new URLSearchParams(filter) : '')); }
+    try { return await this.get('api/vdmi/findings' + (filter ? '?' + new URLSearchParams(filter) : '')); }
     catch (e) {
       var findings = DEMO_FINDINGS;
       if (filter && filter.severity) findings = findings.filter(function(f) { return f.severity === filter.severity; });
